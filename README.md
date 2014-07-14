@@ -1,20 +1,20 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is the DocumentBanks webservice.
 
 ### What is this repository for? ###
 
 * Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* 1.0.0
+* https://www.getpostman.com/collections/f466f379d869ad23c3fc
 
 ### How do I get set up? ###
 
 * Summary of set up
 * Configuration
 * Dependencies
-* Database configuration
-* How to run tests
+* Database configuration - Mongo DB - currently LocalDB
+* How to run tests - Currently having Unit test 
 * Deployment instructions
 
 ### Contribution guidelines ###
@@ -25,5 +25,4 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Repo owner or admin - RAJEEV SINGLA
