@@ -8,6 +8,11 @@ This is the DocumentBanks webservice.
 * 1.0.0
 * https://www.getpostman.com/collections/f466f379d869ad23c3fc
 
+##GIT CLONE REQUEST
+
+git clone https://rsingla01@bitbucket.org/rsingla01/docubankcore.git
+
+
 ### How do I get set up? ###
 
 * Summary of set up
