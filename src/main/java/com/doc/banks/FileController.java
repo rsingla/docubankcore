@@ -41,7 +41,6 @@ public class FileController {
 	 */
 	@RequestMapping(value = "/file", method = RequestMethod.GET)
 	public String file() throws IOException {
-		Path logFile = Paths.get("/tmp/miketyson.txt");
 		
 		File temp = File.createTempFile("tempfile", ".tmp" );
 		 
@@ -52,16 +51,13 @@ public class FileController {
  	    	     substring(0,absolutePath.lastIndexOf(File.separator));
 
  	    System.out.println("File path : " + filePath);
-
-		BufferedReader fileContent =Files.newBufferedReader(logFile);
 		
-		System.out.println(fileContent);
 
 		Date date = new Date();
 	
 
 		System.out.println(mongoTemplate.getDb());
-		mongoTemplate.save(Data.builder(fileContent, date), collectionName);
+		//mongoTemplate.save(Data.builder(fileContent, date), collectionName);
 
 		return "home";
 	}
