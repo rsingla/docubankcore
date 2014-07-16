@@ -18,7 +18,7 @@ import com.doc.banks.model.User;
  */
 @Controller
 @RequestMapping("/v1/")
-public class UserController {
+public class UserController extends ExceptionController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserController.class);
@@ -33,14 +33,25 @@ public class UserController {
 	 * 
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(value = "/registeruser", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
 	public String registerUser(@RequestBody User user) throws IOException {
 
-		if(user != null) {
+		if (user != null) {
 			userBL.insertUser(user);
 		}
 
 		return "home";
+	}
+
+	@RequestMapping(value = "/validatelogin", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" })
+	public boolean validateLogin(String username, String password) {
+		Boolean value = false;
+		User user = userBL.validateLogin(username, password);
+		if (user != null) {
+			value = true;
+		}
+		return value;
+
 	}
 
 }

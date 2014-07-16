@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class MainController {
+public class MainController extends ExceptionController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(MainController.class);

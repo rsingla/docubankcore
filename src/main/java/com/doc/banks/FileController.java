@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("/v1/")
-public class FileController {
+public class FileController extends ExceptionController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(FileController.class);
