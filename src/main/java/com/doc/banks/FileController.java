@@ -29,10 +29,11 @@ public class FileController extends ExceptionController {
 
 	public static String collectionName = "filedata";
 
-	@RequestMapping(method = RequestMethod.POST)
-	public String processUpload(@RequestParam MultipartFile file)
+	@RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
+	public String processUpload(@RequestParam("file") MultipartFile file)
 			throws IOException {
-		file.getInputStream();
+		System.out.println(file.getContentType());
+		System.out.println(file.getInputStream());
 		return "File '" + file.getOriginalFilename()
 				+ "' uploaded successfully";
 	}
