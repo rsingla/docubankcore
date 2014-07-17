@@ -6,7 +6,7 @@ This is the DocumentBanks webservice.
 
 * Quick summary
 * 1.0.0
-* https://www.getpostman.com/collections/f466f379d869ad23c3fc
+* https://www.getpostman.com/collections/e392c8d8107cf6d6a982
 
 ##GIT CLONE REQUEST
 
