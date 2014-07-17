@@ -42,7 +42,7 @@ public class UserController extends ExceptionController {
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
 	public WriteResult registerUser(@RequestBody User user) throws IOException,
 			NoSuchAlgorithmException {
-
+		logger.info(user.toString());
 		if (user != null) {
 			return userBL.insertUser(user);
 		}
@@ -64,7 +64,8 @@ public class UserController extends ExceptionController {
 
 	@RequestMapping(value = "/validatelogin/username/{username}/password/{password}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" })
 	public boolean validateLogin(@PathVariable @Email String username,
-			@PathVariable String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+			@PathVariable String password) throws UnsupportedEncodingException,
+			NoSuchAlgorithmException {
 		Boolean value = false;
 		User user = userBL.validateLogin(username, password);
 		if (user != null) {

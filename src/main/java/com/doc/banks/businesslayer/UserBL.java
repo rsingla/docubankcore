@@ -1,5 +1,10 @@
 package com.doc.banks.businesslayer;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +17,6 @@ import org.springframework.stereotype.Service;
 import com.doc.banks.UserController;
 import com.doc.banks.model.User;
 import com.mongodb.WriteResult;
-
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.*;
 
 @Service
 public class UserBL {

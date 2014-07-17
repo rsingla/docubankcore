@@ -35,7 +35,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", clientId=" + clientId + ", email="
-				+ email + ", password=" + password + ", firstName=" + firstName
+				+ email + ", password=" + null + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", phoneNumber=" + phoneNumber
 				+ ", address=" + address + "]";
 	}

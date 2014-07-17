@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Handles requests for the application home page.
@@ -26,6 +28,14 @@ public class FileController extends ExceptionController {
 	MongoTemplate mongoTemplate;
 
 	public static String collectionName = "filedata";
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String processUpload(@RequestParam MultipartFile file)
+			throws IOException {
+		file.getInputStream();
+		return "File '" + file.getOriginalFilename()
+				+ "' uploaded successfully";
+	}
 
 	/**
 	 * Simply selects the home view to render by returning its name.

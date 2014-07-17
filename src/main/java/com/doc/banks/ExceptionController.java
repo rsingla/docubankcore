@@ -3,6 +3,7 @@ package com.doc.banks;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.doc.banks.constants.ErrorConstants;
 import com.doc.banks.model.ErrorResponse;
-import org.springframework.dao.DuplicateKeyException;
 import com.mongodb.MongoServerSelectionException;
 
 @RestController
