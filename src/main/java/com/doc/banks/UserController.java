@@ -1,20 +1,22 @@
 package com.doc.banks;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.doc.banks.businesslayer.UserBL;
 import com.doc.banks.model.User;
+import com.mongodb.WriteResult;
 
 /**
  * Handles requests for the application home page.
@@ -38,14 +40,14 @@ public class UserController extends ExceptionController {
 	 * @throws NoSuchAlgorithmException
 	 */
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public String registerUser(@RequestBody User user) throws IOException,
+	public WriteResult registerUser(@RequestBody User user) throws IOException,
 			NoSuchAlgorithmException {
 
 		if (user != null) {
-			userBL.insertUser(user);
+			return userBL.insertUser(user);
 		}
 
-		return "home";
+		return null;
 	}
 
 	/**
@@ -54,14 +56,15 @@ public class UserController extends ExceptionController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/register/email/{email}", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public String register(@RequestParam String email) throws IOException {
+	public String register(@PathVariable String email) throws IOException {
 		userBL.sendEmailLink(email);
 
 		return "home";
 	}
 
-	@RequestMapping(value = "/validatelogin", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" })
-	public boolean validateLogin(String username, String password) {
+	@RequestMapping(value = "/validatelogin/username/{username}/password/{password}", method = RequestMethod.GET, consumes = { "application/json" }, produces = { "application/json" })
+	public boolean validateLogin(@PathVariable @Email String username,
+			@PathVariable String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		Boolean value = false;
 		User user = userBL.validateLogin(username, password);
 		if (user != null) {

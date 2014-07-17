@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.doc.banks.UserController;
 import com.doc.banks.model.User;
+import com.mongodb.WriteResult;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -27,37 +28,51 @@ public class UserBL {
 
 	public static String collectionName = "userdata";
 
-	public String insertUser(User user) throws UnsupportedEncodingException,
-			NoSuchAlgorithmException {
+	public WriteResult insertUser(User user)
+			throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
-		Query query = new Query();
-		query.addCriteria(Criteria.where("user.email").is(user.getEmail()));
-		System.out.println(user.getPassword());
-		 String encryptedPassword = md5Password(user.getPassword());
-		System.out.println(encryptedPassword);
+		String encryptedPassword = md5Password(user.getPassword());
+		user.setPassword(encryptedPassword);
 
-		Update update = new Update();
-		update.set("user", user);
+		mongoTemplate.insert(user, collectionName);
 
 		logger.info("Storing User Info: " + user);
-		mongoTemplate.upsert(query, update, collectionName);
-		return "Saved";
+		return null;
+	}
+
+	public WriteResult updateUser(User user)
+			throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("email").is(user.getEmail()));
+
+		Update update = new Update();
+		update.set("password", md5Password(user.getPassword()));
+
+		logger.info("Storing User Info: " + user);
+		WriteResult writeResult = mongoTemplate.upsert(query, update,
+				User.class, collectionName);
+		return writeResult;
 
 	}
 
-	public User validateLogin(String username, String password) {
+	public User validateLogin(String username, String password)
+			throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
 		logger.info(" UserName Info: " + username);
 
 		Query query = new Query();
-		query.addCriteria(Criteria.where("user.user_name").is(username)
-				.and("user.password").is(password));
+		String encryptedPassword = md5Password(password);
 
-		User user = mongoTemplate.findOne(query, User.class);
-		System.out.println("query2 - " + query.toString());
-		System.out.println("userTest - " + user);
+		query.addCriteria(Criteria.where("email").is(username).and("password")
+				.is(encryptedPassword));
 
-		return user;
+		User user = mongoTemplate.findOne(query, User.class, collectionName);
+		if (user.getEmail() != null
+				&& user.getPassword().equalsIgnoreCase(encryptedPassword)) {
+			return user;
+		}
+		return null;
 
 	}
 
@@ -81,8 +96,9 @@ public class UserBL {
 		// TODO Auto-generated method stub
 
 	}
-	
-	public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+	public static void main(String[] args) throws UnsupportedEncodingException,
+			NoSuchAlgorithmException {
 		System.out.println(md5Password("1234abcd"));
 	}
 
