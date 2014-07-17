@@ -68,7 +68,7 @@ public class UserBL {
 				.is(encryptedPassword));
 
 		User user = mongoTemplate.findOne(query, User.class, collectionName);
-		if (user.getEmail() != null
+		if (user != null && user.getEmail() != null
 				&& user.getPassword().equalsIgnoreCase(encryptedPassword)) {
 			return user;
 		}

@@ -4,7 +4,8 @@ import com.doc.banks.model.ErrorResponse;
 
 public enum ErrorConstants {
 
-   MONGO_DB_CONNECTION("DOCBANKS-5001", "Mongo Db Connection is not available");
+   MONGO_DB_CONNECTION("DOCBANKS-5001", "Mongo Db Connection is not available"),
+   MONGO_DUPLICATE_KEY("DOCBANKS-5002", "Duplicate data existing in database");
 
 	String code;
 	String message;
