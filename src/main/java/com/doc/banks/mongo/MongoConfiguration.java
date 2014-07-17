@@ -12,6 +12,18 @@ import com.mongodb.Mongo;
 @Configuration
 public class MongoConfiguration {
 
+	/**
+	 * 
+	 * db.createUser( { "user" : "docudbuser",
+                 "pwd": "dWJ1bnR1ZG9jdW1vbmdvZGI=",
+                 "roles" : [ 
+                             "readWrite"
+                             ] },
+               { w: "majority" , wtimeout: 5000 } );
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public @Bean MongoDbFactory mongoDbFactory() throws Exception {
 		@SuppressWarnings("deprecation")
 		Mongo mongo = new Mongo();
@@ -20,6 +32,11 @@ public class MongoConfiguration {
 				userCredentials);
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public @Bean MongoTemplate mongoTemplate() throws Exception {
 		return new MongoTemplate(mongoDbFactory());
 	}

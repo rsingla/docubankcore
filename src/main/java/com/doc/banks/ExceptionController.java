@@ -4,21 +4,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.doc.banks.constants.ErrorConstants;
 import com.doc.banks.model.ErrorResponse;
 import com.mongodb.MongoServerSelectionException;
 
-@Controller
+@RestController
 public class ExceptionController {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MongoServerSelectionException.class)
-	@ResponseBody
 	public ErrorResponse dbConnectivityIssue(HttpServletRequest req,MongoServerSelectionException ex) {
 		System.out.println(ex.getLocalizedMessage());
 		return ErrorResponse.builder(ErrorConstants.MONGO_DB_CONNECTION);
