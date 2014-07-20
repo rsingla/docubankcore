@@ -1,9 +1,8 @@
-package com.doc.banks;
+package com.doc.banks.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Controller;
@@ -22,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.doc.banks.businesslayer.FileBL;
+import com.doc.banks.exceptions.FileDoesntExistException;
+import com.doc.banks.model.FileDetail;
 import com.mongodb.gridfs.GridFSDBFile;
 
 /**
@@ -40,13 +41,17 @@ public class FileController extends ExceptionController {
 	@Autowired
 	GridFsTemplate gridFsTemplate;
 
+	@Autowired
+	FileBL fileBL;
+
 	public static String collectionName = "filedata";
 
 	@RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
 	public String processUpload(@RequestParam("file") MultipartFile file)
 			throws IOException {
-		System.out.println(file.getContentType());
-		System.out.println(file.getInputStream());
+		logger.info(file.getContentType());
+
+		logger.info("Input Stream File: " + file.getInputStream());
 
 		gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
 				file.getContentType());
@@ -55,45 +60,41 @@ public class FileController extends ExceptionController {
 				+ "' uploaded successfully";
 	}
 
-	@RequestMapping(value = "/getfile/{filename}/filetype/{filetype}", method = RequestMethod.GET, produces = "*/*", consumes = "*/*")
+	@RequestMapping(value = "/getfile/{filename}/", method = RequestMethod.GET, produces = "*/*", consumes = "*/*")
 	public void retrieveUpload(@PathVariable String filename,
-			@PathVariable String filetype, HttpServletResponse response)
-			throws IOException {
-		String completeFile = filename.concat("." + filetype);
-		System.out.println(completeFile);
-		Query query = new Query();
-		query.addCriteria(Criteria.where("filename").is(completeFile));
+			HttpServletResponse response) throws IOException,
+			FileDoesntExistException {
+		logger.info("File Information : " + filename);
 
-		GridFSDBFile gridFSDbFile = gridFsTemplate.findOne(query);
+		try {
+			IOUtils.copy(fileBL.retrieveFile(filename).getInputStream(),
+					response.getOutputStream());
+			response.flushBuffer();
+		} catch (Exception ex) {
+			throw new FileDoesntExistException("File doesnt exist");
+		}
 
-		IOUtils.copy(gridFSDbFile.getInputStream(), response.getOutputStream());
-		response.flushBuffer();
 	}
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Method is to GET All files
 	 * 
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/file", method = RequestMethod.GET)
-	public String file() throws IOException {
+	@RequestMapping(value = "/getallfiles", method = RequestMethod.GET, produces = { "application/json" })
+	public List<FileDetail> getallfiles() throws IOException {
+		Query query = new Query();
+		List<GridFSDBFile> gridFSDbFileList = gridFsTemplate.find(query);
 
-		File temp = File.createTempFile("tempfile", ".tmp");
+		List<FileDetail> fileDetailList = new ArrayList<>();
 
-		String absolutePath = temp.getAbsolutePath();
-		System.out.println("File path : " + absolutePath);
+		for (GridFSDBFile gridFSDBFile : gridFSDbFileList) {
+			fileDetailList.add(FileDetail.builder(gridFSDBFile.getFilename(),
+					gridFSDBFile.getUploadDate(), gridFSDBFile.getLength(),
+					gridFSDBFile.getContentType()));
+		}
 
-		String filePath = absolutePath.substring(0,
-				absolutePath.lastIndexOf(File.separator));
-
-		System.out.println("File path : " + filePath);
-
-		Date date = new Date();
-
-		System.out.println(mongoTemplate.getDb());
-		// mongoTemplate.save(Data.builder(fileContent, date), collectionName);
-
-		return "home";
+		return fileDetailList;
 	}
 
 }

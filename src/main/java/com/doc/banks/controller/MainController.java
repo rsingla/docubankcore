@@ -1,4 +1,4 @@
-package com.doc.banks;
+package com.doc.banks.controller;
 
 import java.text.DateFormat;
 import java.util.Date;

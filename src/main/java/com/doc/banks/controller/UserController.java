@@ -1,4 +1,4 @@
-package com.doc.banks;
+package com.doc.banks.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

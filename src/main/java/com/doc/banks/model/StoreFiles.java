@@ -1,4 +1,4 @@
-package com.doc.banks.util;
+package com.doc.banks.model;
 
 import java.nio.file.Files;
 import java.util.List;

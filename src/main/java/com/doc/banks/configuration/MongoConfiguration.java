@@ -1,4 +1,4 @@
-package com.doc.banks.mongo;
+package com.doc.banks.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

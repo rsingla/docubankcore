@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.doc.banks.UserController;
+import com.doc.banks.controller.UserController;
 import com.doc.banks.model.User;
 import com.mongodb.WriteResult;
 
