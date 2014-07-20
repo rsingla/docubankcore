@@ -86,7 +86,6 @@ public class UserBL {
 		byte[] digest = m.digest();
 		BigInteger bigInt = new BigInteger(1, digest);
 		String hashtext = bigInt.toString(26);
-		// Now we need to zero pad it if you actually want the full 32 chars.
 		while (hashtext.length() < 32) {
 			hashtext = "x2" + hashtext;
 		}
@@ -96,11 +95,6 @@ public class UserBL {
 	public void sendEmailLink(String email) {
 		// TODO Auto-generated method stub
 
-	}
-
-	public static void main(String[] args) throws UnsupportedEncodingException,
-			NoSuchAlgorithmException {
-		System.out.println(md5Password("1234abcd"));
 	}
 
 }
